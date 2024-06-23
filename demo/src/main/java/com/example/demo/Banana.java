@@ -11,40 +11,29 @@ public class Banana {
     static Set<String> bananas(final String s) {
         Set<String> result = new HashSet<>();
         String withoutWrongLetters = s.replaceAll("[^abns]", "-");
-        recursive(result, withoutWrongLetters, 0, 0);
+        recursive(result, withoutWrongLetters, 0);
         return result;
     }
 
-    private static void recursive(Set<String> result, String current, int startIndex, int bananaIndex) {
-        System.out.println(current);
-        for (int currentIndex = startIndex; currentIndex < current.length(); currentIndex++) {
-            if (bananaIndex >= BANANAS.length()) {
-                current = crossLetter(current, currentIndex);
-                continue;
-            }
-
-            Character letter = current.charAt(currentIndex);
-            if (letter.equals(BANANAS.charAt(bananaIndex))) {
-                recursive(result, current, currentIndex + 1, bananaIndex + 1);
-                recursive(result, crossLetter(current, currentIndex), currentIndex + 1, bananaIndex);
-                return;
-            } else {
-                current = crossLetter(current, currentIndex);
-            }
-
-        }
-
-        if (withoutDashesIsBanana(current)) {
+    private static void recursive(Set<String> result, String current, int currentIndex) {
+        System.out.println(current + " " + currentIndex);
+        String currentWithoutCrosses = current.replaceAll("-", "");
+        if (currentWithoutCrosses.equals(BANANAS)) {
             result.add(current);
+        }
+        if(currentWithoutCrosses.length()<BANANAS.length()) {
+            return;
+        }
+        if(currentIndex < current.length()) {
+            recursive(result, current, currentIndex + 1);
+            if (current.charAt(currentIndex) != '-') {
+                recursive(result, crossLetter(current, currentIndex), currentIndex + 1);
+            }
         }
     }
 
     private static String crossLetter(String word, int letterIndex) {
         return word.substring(0, letterIndex) + "-" + word.substring(letterIndex + 1);
-    }
-
-    private static boolean withoutDashesIsBanana(String current) {
-        return current.replaceAll("-", "").equals(BANANAS);
     }
 
 }
