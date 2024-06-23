@@ -24,11 +24,6 @@ public class Banana {
             }
 
             Character letter = current.charAt(currentIndex);
-            if (isNotBorNorA(letter)) {
-                current = crossLetter(current, currentIndex);
-                continue;
-            }
-
             if (letter.equals(BANANAS.charAt(bananaIndex))) {
                 recursive(result, current, currentIndex + 1, bananaIndex + 1);
                 recursive(result, crossLetter(current, currentIndex), currentIndex + 1, bananaIndex);
@@ -46,10 +41,6 @@ public class Banana {
 
     private static String crossLetter(String word, int letterIndex) {
         return word.substring(0, letterIndex) + "-" + word.substring(letterIndex + 1);
-    }
-
-    private static boolean isNotBorNorA(Character letter) {
-        return BANANAS.indexOf(letter) == -1;
     }
 
     private static boolean withoutDashesIsBanana(String current) {
