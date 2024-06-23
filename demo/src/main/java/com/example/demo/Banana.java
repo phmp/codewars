@@ -1,7 +1,7 @@
 package com.example.demo;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class Banana {
@@ -9,13 +9,16 @@ public class Banana {
 
 
     static Set<String> bananas(final String s) {
-        return simpleBanana(s, 0, 0);
+        Set<String> result = new HashSet<>();
+        String withoutWrongLetters = s.replaceAll("[^abns]", "-");
+        recursive(result, withoutWrongLetters, 0, 0);
+        return result;
     }
 
-    private static Set<String> simpleBanana(String current, int startIndex, int startBananaIndex) {
-        Set<String> result = new HashSet<>();
-        for (int currentIndex = startIndex, banannasIndex = startBananaIndex; currentIndex < current.length(); currentIndex++) {
-            if(banannasIndex >= BANANAS.length()){
+    private static void recursive(Set<String> result, String current, int startIndex, int bananaIndex) {
+        System.out.println(current);
+        for (int currentIndex = startIndex; currentIndex < current.length(); currentIndex++) {
+            if (bananaIndex >= BANANAS.length()) {
                 current = crossLetter(current, currentIndex);
                 continue;
             }
@@ -26,25 +29,23 @@ public class Banana {
                 continue;
             }
 
-            if (letter.equals(BANANAS.charAt(banannasIndex))){
-                Set<String> withTheSameLetter = simpleBanana(current, currentIndex+1, banannasIndex+1);
-                Set<String> withCrossedLetter = simpleBanana(crossLetter(current, currentIndex), currentIndex+1, banannasIndex);
-                return mergeSet(withTheSameLetter, withCrossedLetter);
+            if (letter.equals(BANANAS.charAt(bananaIndex))) {
+                recursive(result, current, currentIndex + 1, bananaIndex + 1);
+                recursive(result, crossLetter(current, currentIndex), currentIndex + 1, bananaIndex);
+                return;
             } else {
                 current = crossLetter(current, currentIndex);
             }
 
         }
 
-        if(withoutDashesIsBanana(current)) {
+        if (withoutDashesIsBanana(current)) {
             result.add(current);
         }
-
-        return result;
     }
 
     private static String crossLetter(String word, int letterIndex) {
-        return word.substring(0, letterIndex) + "-" + word.substring(letterIndex+1);
+        return word.substring(0, letterIndex) + "-" + word.substring(letterIndex + 1);
     }
 
     private static boolean isNotBorNorA(Character letter) {
@@ -52,14 +53,7 @@ public class Banana {
     }
 
     private static boolean withoutDashesIsBanana(String current) {
-        return current.replaceAll("-","").equals(BANANAS);
+        return current.replaceAll("-", "").equals(BANANAS);
     }
 
-    public static Set<String> mergeSet(Set<String> a, Set<String> b)
-    {
-        Set<String> mergedSet = new HashSet<>();
-        mergedSet.addAll(a);
-        mergedSet.addAll(b);
-        return mergedSet;
-    }
 }

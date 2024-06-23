@@ -12,6 +12,7 @@ public class BananaTest {
 
     public static Stream<Arguments> test() {
         return Stream.of(
+                Arguments.of("ranna", Set.of()),
                 Arguments.of("banana", Set.of()),
                 Arguments.of("banggana", Set.of()),
                 Arguments.of("bananas", Set.of("bananas")),
