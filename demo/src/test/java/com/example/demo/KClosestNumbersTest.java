@@ -23,5 +23,11 @@ public class KClosestNumbersTest {
         Assertions.assertEquals(expected, KClosestNumbers.closestNumbers(k, target, numbers));
     }
 
+    @ParameterizedTest
+    @MethodSource("test")
+    void test2(List<Integer> numbers, int k, int target, List<Integer> expected ){
+        Assertions.assertEquals(expected, KClosestNumbersWithBinarySearch.closestNumbers(k, target, numbers));
+    }
+
 
 }
