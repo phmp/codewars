@@ -28,4 +28,11 @@ public class BananaTest {
     }
 
 
+    synchronized static void test2(){
+
+    }
+
+    static class A {
+
+    }
 }
